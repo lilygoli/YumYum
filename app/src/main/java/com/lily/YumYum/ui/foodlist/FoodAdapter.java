@@ -1,11 +1,13 @@
 package com.lily.YumYum.ui.foodlist;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +66,18 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         // food description
         foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));//food.getDescription());
+
+        // food bookmark
+        foodViewHolder.binding.BookmarkStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Timber.d("Position clicked: %s", position);
+                MainActivity m = (MainActivity )mContext;
+                m.myFavorites.insertFood(food.getMainName(), String.valueOf(position));
+                Log.d("Database", m.myFavorites.getAllFoods().toString());
+            }
+        });
 
         // click event
         foodViewHolder.itemView.setOnClickListener(new View.OnClickListener() {

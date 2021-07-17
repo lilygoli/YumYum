@@ -13,11 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.lily.YumYum.database.DbHelper;
 import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.R;
 import com.lily.YumYum.model.Food;
 import com.lily.YumYum.ui.ownrecipe.OwnRecipeActivity;
+import com.lily.YumYum.ui.favorite.favoritesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +33,16 @@ public class MainActivity extends AppCompatActivity {
 
     private FoodListViewModel mViewModel;
 
+    DbHelper myFavorites;
+    ArrayList db_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        deleteDatabase("Bookmark.db");
+        myFavorites = new DbHelper(this);
+        ArrayList db_data = myFavorites.getAllFoods();
 
         mViewModel = obtainViewModel(this);
 
@@ -108,5 +119,28 @@ public class MainActivity extends AppCompatActivity {
     private void launchOwnRecipeActivity() {
         Intent intent = new Intent(this, OwnRecipeActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.favorite:
+                Intent intent = new Intent(this, favoritesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.MyRecipes:
+                break;
+            case R.id.Setting:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
