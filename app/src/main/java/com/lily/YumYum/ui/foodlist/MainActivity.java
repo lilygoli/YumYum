@@ -10,10 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.R;
 import com.lily.YumYum.model.Food;
+import com.lily.YumYum.ui.favorite.favoritesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,5 +89,28 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.favorite:
+                Intent intent = new Intent(this, favoritesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.MyRecipes:
+                break;
+            case R.id.Setting:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

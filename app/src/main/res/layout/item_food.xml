@@ -34,12 +34,13 @@
             <TextView
                 android:id="@+id/text_name"
                 style="@style/CardArticleItemText.Headline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="266dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toStartOf="@+id/image_food"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/lorem/random" />
@@ -58,6 +59,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_name"
                 tools:text="@tools:sample/lorem/random" />
+
+            <ImageButton
+                android:id="@+id/BookmarkStar"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                app:srcCompat="@android:drawable/btn_star"
+                app:layout_constraintStart_toEndOf="@+id/text_name"
+                app:layout_constraintTop_toTopOf="@+id/text_name"
+                android:tint="@color/selector"
+                android:clickable="true"
+                />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

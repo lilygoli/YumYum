@@ -1,6 +1,7 @@
 package com.lily.YumYum.ui.foodlist;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -64,6 +65,15 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         // food description
         foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));//food.getDescription());
+//        Drawable starDrawable = foodViewHolder.binding.BookmarkStar.getBackground();
+        foodViewHolder.binding.BookmarkStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Timber.d("Position clicked: %s", position);
+//                mViewModel.getOpenfoodEvent().setValue(position);
+            }
+        });
 
         // click event
         foodViewHolder.itemView.setOnClickListener(new View.OnClickListener() {

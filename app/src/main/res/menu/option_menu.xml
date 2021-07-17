@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/option_menu">
+    <item
+        android:id="@+id/favorite"
+        android:title="Favorite"/>
+    <item
+        android:id="@+id/MyRecipes"
+        android:title="MyRecipes"/>
+    <item
+        android:id="@+id/Setting"
+        android:title="Setting"/>
+</menu>
