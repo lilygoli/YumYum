@@ -11,6 +11,7 @@ public class Food {
     private String image;
     private List<String> ingredients = null;
     private List<String> steps = null;
+    private boolean isBookmarked = false;
 
     /**
      * No args constructor for use in serialization
@@ -82,5 +83,13 @@ public class Food {
 
     public void setSteps(List<String> steps) {
         this.steps = steps;
+    }
+
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 }

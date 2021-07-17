@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.lily.YumYum.database.DbHelper;
 import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.R;
 import com.lily.YumYum.model.Food;
@@ -28,10 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
     private FoodListViewModel mViewModel;
 
+    DbHelper myFavorites;
+    ArrayList db_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        deleteDatabase("Bookmark.db");
+        myFavorites = new DbHelper(this);
+        ArrayList db_data = myFavorites.getAllFoods();
 
         mViewModel = obtainViewModel(this);
 

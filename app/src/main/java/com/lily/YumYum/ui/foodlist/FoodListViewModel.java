@@ -32,11 +32,6 @@ import okhttp3.Response;
 
 import timber.log.Timber;
 
-/**
- * Exposes the data to be used in the food list screen.
- *
- * @author Yassin Ajdi
- */
 public class FoodListViewModel extends AndroidViewModel {
 
     private final static int RANDOM_LIST_NUM = 10;
@@ -49,12 +44,14 @@ public class FoodListViewModel extends AndroidViewModel {
 
     private OkHttpClient client = new OkHttpClient();
 
+//    private MainActivity mainActivity;
     public FoodListViewModel(@NonNull Application application) {
         super(application);
         Timber.d("Creating viewModel");
 
         // initialize data
         mContext = application.getApplicationContext();
+//        mainActivity = (MainActivity)mContext;
         AppExecutors mExecutors = AppExecutors.getInstance();
         mObservablefoodes = new MutableLiveData<>();
         final List<Food> foodeList = new ArrayList<>();
