@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.lily.YumYum.ui.details.DetailActivity" />
+        <activity android:name="com.lily.YumYum.ui.ownrecipe.OwnRecipeActivity" />
+        <activity android:name="com.lily.YumYum.ui.ownrecipe.AddFoodActivity" />
     </application>
 
 </manifest>

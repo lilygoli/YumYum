@@ -33,6 +33,9 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
+    public static final String EXTRA_FILE = "extra_file";
+
+
     private ActivityDetailBinding mBinding;
 
     @Override
@@ -46,6 +49,9 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         final int position = intent.getIntExtra(EXTRA_POSITION, DEFAULT_POSITION);
+
+        final String file = intent.getStringExtra(EXTRA_FILE);
+
         if (position == DEFAULT_POSITION) {
             // EXTRA_POSITION not found in intent
             closeOnError();
@@ -54,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
 
         setupToolbar();
 
-        FoodViewModel mViewModel = obtainViewModel(this, position);
+        FoodViewModel mViewModel = obtainViewModel(this, position, file);
 
         // Subscribe to food changes
         mViewModel.getfood().observe(this, new Observer<Food>() {
@@ -75,8 +81,8 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private FoodViewModel obtainViewModel(FragmentActivity activity, int position) {
-        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication(), position);
+    private FoodViewModel obtainViewModel(FragmentActivity activity, int position, String file) {
+        ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication(), position, file);
         return ViewModelProviders.of(activity, factory).get(FoodViewModel.class);
     }
 
@@ -110,7 +116,7 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         // Programmatically create & add "also known as" labels
-        List<String> names = food.getAlsoKnownAs();
+        List<String> names = food.getDiets();
         if (!names.isEmpty()) {
             for (String name : names) {
                 TextView textView = new TextView(this);

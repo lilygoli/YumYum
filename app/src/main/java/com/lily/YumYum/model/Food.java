@@ -5,7 +5,7 @@ import java.util.List;
 public class Food {
 
     private String mainName;
-    private List<String> alsoKnownAs = null;
+    private List<String> diets = null;
     private String placeOfOrigin;
     private String description;
     private String image;
@@ -18,9 +18,9 @@ public class Food {
     public Food() {
     }
 
-    public Food(String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingredients, List<String> steps) {
+    public Food(String mainName, List<String> diets, String placeOfOrigin, String description, String image, List<String> ingredients, List<String> steps) {
         this.mainName = mainName;
-        this.alsoKnownAs = alsoKnownAs;
+        this.diets = diets;
         this.placeOfOrigin = placeOfOrigin;
         this.description = description;
         this.image = image;
@@ -36,12 +36,12 @@ public class Food {
         this.mainName = mainName;
     }
 
-    public List<String> getAlsoKnownAs() {
-        return alsoKnownAs;
+    public List<String> getDiets() {
+        return diets;
     }
 
-    public void setAlsoKnownAs(List<String> alsoKnownAs) {
-        this.alsoKnownAs = alsoKnownAs;
+    public void setDiets(List<String> diets) {
+        this.diets = diets;
     }
 
     public String getPlaceOfOrigin() {

@@ -32,11 +32,6 @@ import okhttp3.Response;
 
 import timber.log.Timber;
 
-/**
- * Exposes the data to be used in the food list screen.
- *
- * @author Yassin Ajdi
- */
 public class FoodListViewModel extends AndroidViewModel {
 
     private final static int RANDOM_LIST_NUM = 10;
@@ -49,6 +44,8 @@ public class FoodListViewModel extends AndroidViewModel {
 
     private OkHttpClient client = new OkHttpClient();
 
+    public boolean isMain = true;
+
     public FoodListViewModel(@NonNull Application application) {
         super(application);
         Timber.d("Creating viewModel");
@@ -60,6 +57,7 @@ public class FoodListViewModel extends AndroidViewModel {
         final List<Food> foodeList = new ArrayList<>();
 
         final List<Pair<Food, String>> data = new ArrayList<>();
+
 
 
 //
@@ -128,28 +126,28 @@ public class FoodListViewModel extends AndroidViewModel {
         mExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-            String x = readFromFile(mContext);
-            String[] y = x.split("#");
-//            Log.i("RUNNN", "RUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUN");
-//            Log.i("RUNNN", x);
-                for (String s:y
-                     ) {
+                String x = readFromFile(mContext, "random.txt");
+                String[] y = x.split("#");
+
+                for (String s : y
+                ) {
                     Food food = null;
                     try {
                         food = JsonUtils.parsefoodJson(s);
-                        Log.i("NAAAME", food.getSteps().get(0));
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     foodeList.add(food);
                 }
 
-            if (!foodeList.isEmpty()) {
+                if (!foodeList.isEmpty()) {
 
-            mObservablefoodes.postValue(foodeList);
-            }
+                    mObservablefoodes.postValue(foodeList);
+                }
             }
         });
+
     }
 
     public LiveData<List<Food>> getfoodList() {
@@ -170,12 +168,12 @@ public class FoodListViewModel extends AndroidViewModel {
             return response.body().string();
         }
     }
-    private String readFromFile(Context context) {
+    private String readFromFile(Context context, String file) {
 
         String ret = "";
 
         try {
-            InputStream inputStream = context.openFileInput("random.txt");
+            InputStream inputStream = context.openFileInput(file);
 
             if (inputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);

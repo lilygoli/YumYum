@@ -8,6 +8,7 @@ import com.lily.YumYum.model.Food;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class JsonUtils {
         try {
             image = foodObject.getString(KEY_IMAGE_URL);
         } catch (Exception e) {
-            Log.i("Image", "NO IMAGEEEEEEEEEE");
+//            Log.i("Image", "NO IMAGEEEEEEEEEE");
             image = "https://icon-library.com/images/order-food-icon/order-food-icon-21.jpg";
         }
 
@@ -87,7 +88,10 @@ public class JsonUtils {
             }catch (Exception e){
                 unit = "";
             }
-            strings.add(jsonArray.getJSONObject(i).getString("name").concat(": ").concat(amount).concat(" ").concat(unit));
+            String name = jsonArray.getJSONObject(i).getString("name");
+            if(!name.equals("")){
+                strings.add(name.concat(": ").concat(amount).concat(" ").concat(unit));
+            }
         }
         return strings;
     }
@@ -99,7 +103,10 @@ public class JsonUtils {
             JSONObject wrapper = jsonArray.getJSONObject(0);
             JSONArray steps = wrapper.getJSONArray("steps");
             for (int i = 0; i < steps.length(); i++) {
-                strings.add(steps.getJSONObject(i).getString("step"));
+                String step = steps.getJSONObject(i).getString("step");
+                if(!step.equals("")){
+                    strings.add(step);
+                }
             }
         } else {
             strings.add("Mix the ingredients! Voila!");
@@ -117,5 +124,59 @@ public class JsonUtils {
             }
         }
         return strings;
+    }
+
+    public static String foodToJson(Food food, List<String > units, List<String > measures) throws  JSONException{
+
+        JSONObject recipes = new JSONObject();
+        JSONArray array_recipes = new JSONArray();
+        recipes.put("recipes",array_recipes);
+
+        JSONObject recipe = new JSONObject();
+        array_recipes.put(recipe);
+
+        recipe.put("title", food.getMainName());
+        recipe.put("image", food.getImage());
+        recipe.put("summary", food.getDescription());
+
+        JSONArray cuisines = new JSONArray();
+        for (String cuisine: food.getPlaceOfOrigin().split(",")
+             ) {
+            cuisines.put(cuisine);
+        }
+        recipe.put("cuisines", cuisines);
+
+        JSONArray diets = new JSONArray();
+        for (String diet: food.getDiets()
+        ) {
+            diets.put(diet);
+        }
+        recipe.put("diets", diets);
+
+        JSONArray steps = new JSONArray();
+        JSONObject step_obj = new JSONObject();
+        JSONArray steps_in = new JSONArray();
+        for (String step: food.getSteps()
+        ) {
+            JSONObject last_step = new JSONObject();
+            last_step.put("step", step);
+            steps_in.put(last_step);
+        }
+        step_obj.put("steps", steps_in);
+        steps.put(step_obj);
+        recipe.put("analyzedInstructions", steps);
+
+        JSONArray ingredients = new JSONArray();
+        for (int i = 0; i < food.getIngredients().size() ; i++) {
+            JSONObject ingredient = new JSONObject();
+            ingredient.put("name", food.getIngredients().get(i));
+            ingredient.put("amount", measures.get(i));
+            ingredient.put("unit", units.get(i));
+            ingredients.put(ingredient);
+        }
+        recipe.put("extendedIngredients", ingredients);
+
+
+        return recipes.toString();
     }
 }

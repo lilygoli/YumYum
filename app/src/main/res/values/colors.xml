@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00AA8D</color>
-    <color name="colorPrimaryDark">#008d6f</color>
+    <color name="colorPrimary">#FFF7AE</color>
+    <color name="colorPrimaryDark">#E4EC9A</color>
     <color name="colorAccent">#EF5458</color>
+    <color name="titlebar">#CDDC39</color>
+    <color name="titletext">#AC944B</color>
 
     <!--text colors-->
     <color name="text_black_87">#DE000000</color>

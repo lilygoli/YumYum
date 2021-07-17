@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="70dp"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@drawable/round_toolbar2"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/PopupOverlay">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_your_recipe"
+                        android:textAlignment="center"
+                        android:textColor="#9FAA38"
+                        android:textSize="28sp"
+                        tools:ignore="MissingConstraints" />
+                </android.support.v7.widget.Toolbar>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/food_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:ems="10"
+                        android:hint="@string/food_name"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/cuisine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/food_name"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:hint="@string/cuisines"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/diets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cuisine"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:hint="@string/diets"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <EditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/diets"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:hint="@string/description"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <RelativeLayout
+                        android:id="@+id/ingredients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/description"
+                        android:layout_marginTop="10dp">
+
+                        <include
+                            android:id="@+id/x"
+                            layout="@layout/ingredient"
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/description"
+                            android:layout_height="wrap_content"
+                            tools:ignore="NotSibling" />
+
+                        <Button
+                            android:id="@+id/add_ingredient_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/x"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:text="Add"
+                            tools:ignore="NotSibling" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ingredients"
+                        android:layout_marginTop="10dp">
+
+                        <EditText
+                            android:id="@+id/step"
+                            android:layout_width="match_parent"
+                            android:layout_below="@id/ingredients"
+                            android:layout_height="wrap_content"
+
+                            android:ems="10"
+                            android:hint="@string/step"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            tools:ignore="NotSibling" />
+
+                        <Button
+                            android:id="@+id/add_step_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/step"
+                            android:backgroundTint="@color/colorPrimaryDark"
+                            android:text="Add" />
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:backgroundTint="#4CAF50"
+                android:text="@string/submit" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:backgroundTint="#F44336"
+                android:text="@string/cancel" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

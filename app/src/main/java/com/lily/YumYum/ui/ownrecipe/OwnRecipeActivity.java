@@ -1,39 +1,44 @@
-package com.lily.YumYum.ui.foodlist;
+package com.lily.YumYum.ui.ownrecipe;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.R;
 import com.lily.YumYum.model.Food;
-import com.lily.YumYum.ui.ownrecipe.OwnRecipeActivity;
+import com.lily.YumYum.ui.details.DetailActivity;
+import com.lily.YumYum.databinding.OwnRecipeActivityBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class OwnRecipeActivity extends AppCompatActivity {
 
-    private FoodAdapter mFoodAdapter;
+    private OwnFoodAdapter mFoodAdapter;
 
-    private FoodListViewModel mViewModel;
+    private static OwnFoodListViewModel mViewModel;
+
+    private  OwnRecipeActivity mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        DataBindingUtil.setContentView(this, R.layout.own_recipe_activity);
 
         mViewModel = obtainViewModel(this);
+
 
         setupToolbar();
 
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Food> foods) {
                 if (foods != null) {
+//                    Log.i("FFFFFOOD", String.valueOf(foods));
                     mFoodAdapter.replaceData(foods);
                 }
             }
@@ -58,23 +64,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        Button own_recipe_button = findViewById(R.id.own_recipe_button);
 
-        Button search_button = findViewById(R.id.search_button);
-
-
-        own_recipe_button.setOnClickListener(new View.OnClickListener() {
+        Button back_button = findViewById(R.id.back_button);
+        back_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                launchOwnRecipeActivity();
-
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
+
+        FloatingActionButton add_button = findViewById(R.id.add_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newFoodActivity();
+            }
+        });
+
     }
 
-    private FoodListViewModel obtainViewModel(FragmentActivity activity) {
-        return ViewModelProviders.of(activity).get(FoodListViewModel.class);
+    private OwnFoodListViewModel obtainViewModel(FragmentActivity activity) {
+        return ViewModelProviders.of(activity).get(OwnFoodListViewModel.class);
     }
 
     private void setupListAdapter() {
@@ -83,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        mFoodAdapter = new FoodAdapter(this,
+        mFoodAdapter = new OwnFoodAdapter(this,
                 new ArrayList<Food>(0),
                 mViewModel
         );
@@ -101,12 +111,17 @@ public class MainActivity extends AppCompatActivity {
     private void launchDetailActivity(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
-        intent.putExtra(DetailActivity.EXTRA_FILE, "random.txt");
+        intent.putExtra(DetailActivity.EXTRA_FILE, "own4.txt");
         startActivity(intent);
     }
 
-    private void launchOwnRecipeActivity() {
-        Intent intent = new Intent(this, OwnRecipeActivity.class);
+    private void newFoodActivity() {
+        Intent intent = new Intent(this, AddFoodActivity.class);
+
         startActivity(intent);
+    }
+
+    public static OwnFoodListViewModel getmViewModel() {
+        return mViewModel;
     }
 }

@@ -7,11 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/**
- * Global executor pools for the whole application.
- *
- * @author Yassin Ajdi
- */
+
 public class AppExecutors {
 
     private static volatile AppExecutors sInstance;

@@ -14,14 +14,17 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final int mPosition;
 
-    public static ViewModelFactory getInstance(Application application, int position) {
+    private final String mFile;
 
-        return new ViewModelFactory(application, position);
+    public static ViewModelFactory getInstance(Application application, int position, String file) {
+
+        return new ViewModelFactory(application, position, file);
     }
 
-    private ViewModelFactory(Application application, int position) {
+    private ViewModelFactory(Application application, int position, String file) {
         mApplication = application;
         mPosition = position;
+        mFile = file;
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(FoodViewModel.class)) {
             //noinspection unchecked
-            return (T) new FoodViewModel(mApplication, mPosition);
+            return (T) new FoodViewModel(mApplication, mPosition, mFile);
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
