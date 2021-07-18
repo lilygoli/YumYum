@@ -67,15 +67,33 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         // food description
         foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));//food.getDescription());
 
+        MainActivity m = (MainActivity) mContext;
+        if(m.myFavorites.getDataByName(food.getMainName()).getCount() == 0){
+            foodViewHolder.binding.BookmarkStar.setChecked(false);
+            food.setBookmarked(false);
+        }
+        else {
+            foodViewHolder.binding.BookmarkStar.setChecked(true);
+            food.setBookmarked(true);
+        }
+
+
         // food bookmark
         foodViewHolder.binding.BookmarkStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                Timber.d("Position clicked: %s", position);
                 MainActivity m = (MainActivity )mContext;
-                m.myFavorites.insertFood(food.getMainName(), String.valueOf(position));
-                Log.d("Database", m.myFavorites.getAllFoods().toString());
+                if(food.isBookmarked()){
+                    food.setBookmarked(false);
+                    m.myFavorites.deleteFood(food.getMainName());
+                }
+                else {
+                    Timber.d("Position clicked: %s", position);
+                    food.setBookmarked(true);
+                    m.myFavorites.insertFood(food.getMainName(), String.valueOf(position));
+                    Log.d("Database", m.myFavorites.getAllFoods().toString());
+                }
             }
         });
 

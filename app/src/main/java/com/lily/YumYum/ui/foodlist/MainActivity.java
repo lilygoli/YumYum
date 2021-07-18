@@ -140,26 +140,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-  //  @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.option_menu, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.favorite:
-//                Intent intent = new Intent(this, favoritesActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.MyRecipes:
-//                break;
-//            case R.id.Setting:
-//                break;
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFoodAdapter.notifyDataSetChanged();
+    }
 }

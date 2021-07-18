@@ -32,8 +32,11 @@ public class favoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<Food> mFoodList;
 
-    public favoriteAdapter(Context context, List<Food> foods) {
+    private FavoriteListViewModel mViewModel;
+
+    public favoriteAdapter(Context context, List<Food> foods, FavoriteListViewModel viewModel) {
         mContext = context;
+        mViewModel = viewModel;
         replaceData(foods);
     }
 
@@ -66,17 +69,20 @@ public class favoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // food description
         foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));//food.getDescription());
 
+        foodViewHolder.binding.BookmarkStar.setChecked(true);
         // food bookmark
-//        foodViewHolder.binding.BookmarkStar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = holder.getAdapterPosition();
-//                Timber.d("Position clicked: %s", position);
-//                MainActivity m = (MainActivity )mContext;
-//                m.myFavorites.insertFood(food.getMainName(), String.valueOf(position));
-//                Log.d("Database", m.myFavorites.getAllFoods().toString());
-//            }
-//        });
+        foodViewHolder.binding.BookmarkStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Timber.d("Position clicked: %s", position);
+                favoritesActivity m = (favoritesActivity)mContext;
+                food.setBookmarked(false);
+                m.db.deleteFood(food.getMainName());
+                mFoodList.remove(food);
+                notifyDataSetChanged();
+            }
+        });
 
         // click event
         foodViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +90,7 @@ public class favoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 Timber.d("Position clicked: %s", position);
-                //mViewModel.getOpenfoodEvent().setValue(position);
+                mViewModel.getOpenfoodEvent().setValue(position);
             }
         });
 

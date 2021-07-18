@@ -60,15 +60,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_name"
                 tools:text="@tools:sample/lorem/random" />
 
-            <ImageButton
+            <ToggleButton
                 android:id="@+id/BookmarkStar"
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                app:srcCompat="@android:drawable/btn_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                style="?android:attr/starStyle"
                 app:layout_constraintStart_toEndOf="@+id/text_name"
+                app:layout_constraintEnd_toStartOf="@+id/image_food"
                 app:layout_constraintTop_toTopOf="@+id/text_name"
-                android:tint="@color/selector"
-                android:clickable="true"
                 />
 
         </android.support.constraint.ConstraintLayout>

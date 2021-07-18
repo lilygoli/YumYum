@@ -59,9 +59,9 @@ public class DbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getData(int id) {
+    public Cursor getDataByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from Foods where id="+id+"", null );
+        Cursor res =  db.rawQuery( "select * from Foods where name="+'"'+name+'"'+"", null );
         return res;
     }
 
@@ -86,11 +86,11 @@ public class DbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteFood (Integer id) {
+    public Integer deleteFood (String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("Foods",
-                "id = ? ",
-                new String[] { Integer.toString(id) });
+                "name = ? ",
+                new String[] { name });
     }
 
 
