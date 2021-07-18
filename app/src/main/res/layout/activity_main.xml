@@ -51,17 +51,6 @@
                     android:paddingBottom="2dp"
                     android:text="@string/random_picks"
                     android:textColor="@color/titletext" />
-
-                <Button
-                    android:id="@+id/search_button"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/search_icon"
-                    android:layout_marginHorizontal="10dp"
-                    android:clickable="true"
-                    android:gravity="right"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true" />
                 <Button
                     android:id="@+id/own_recipe_button"
                     android:layout_width="20dp"

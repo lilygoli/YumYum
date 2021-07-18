@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         });
         Button own_recipe_button = findViewById(R.id.own_recipe_button);
 
-        Button search_button = findViewById(R.id.search_button);
 
         Button favorites = findViewById(R.id.favorite_button);
 
