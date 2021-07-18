@@ -13,7 +13,8 @@ A food recipe provider for mobile programming course. Uses spoonacular recipe AP
 * [ViewModel & LiveData](https://developer.android.com/topic/libraries/architecture/adding-components)
 * [DataBinding](https://developer.android.com/topic/libraries/data-binding/)
 
-##Group members:
+## Group members:
+
 * Leily Goli
 * Fereshteh Forghani
 * Mahsa Dalirrooyfard
