@@ -1,8 +1,9 @@
 package com.lily.YumYum.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Food {
+public class Food implements Serializable {
 
     private String mainName;
     private List<String> diets = null;

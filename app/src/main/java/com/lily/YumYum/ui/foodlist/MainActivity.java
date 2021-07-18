@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         deleteDatabase("Bookmark.db");
+
         myFavorites = new DbHelper(this);
         ArrayList db_data = myFavorites.getAllFoods();
 
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button search_button = findViewById(R.id.search_button);
 
+        Button favorites = findViewById(R.id.favorite_button);
+
 
         own_recipe_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                launchFavoriteFoodActivity();
+
+            }
+        });
+
     }
 
     private FoodListViewModel obtainViewModel(FragmentActivity activity) {
@@ -121,26 +134,32 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return true;
+    private void launchFavoriteFoodActivity(){
+        Intent intent = new Intent(this,favoritesActivity.class);
+        intent.putExtra("EXTERA_FOODLIST", mViewModel.getFoodeList());
+        startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.favorite:
-                Intent intent = new Intent(this, favoritesActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.MyRecipes:
-                break;
-            case R.id.Setting:
-                break;
+  //  @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.option_menu, menu);
+//        return true;
+//    }
 
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.favorite:
+//                Intent intent = new Intent(this, favoritesActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.MyRecipes:
+//                break;
+//            case R.id.Setting:
+//                break;
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

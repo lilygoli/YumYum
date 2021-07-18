@@ -72,6 +72,16 @@
                     android:gravity="right"
                     android:focusableInTouchMode="true"
                     android:focusable="true" />
+                <Button
+                    android:id="@+id/favorite_button"
+                    android:layout_width="20dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/star"
+                    android:layout_marginHorizontal="10dp"
+                    android:clickable="true"
+                    android:gravity="right"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true" />
 
             </android.support.v7.widget.Toolbar>
 

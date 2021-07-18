@@ -45,6 +45,11 @@ public class FoodListViewModel extends AndroidViewModel {
     private OkHttpClient client = new OkHttpClient();
 
     public boolean isMain = true;
+    final ArrayList<Food> foodeList = new ArrayList<>();
+
+    public ArrayList<Food> getFoodeList() {
+        return foodeList;
+    }
 
     public FoodListViewModel(@NonNull Application application) {
         super(application);
@@ -54,7 +59,7 @@ public class FoodListViewModel extends AndroidViewModel {
         mContext = application.getApplicationContext();
         AppExecutors mExecutors = AppExecutors.getInstance();
         mObservablefoodes = new MutableLiveData<>();
-        final List<Food> foodeList = new ArrayList<>();
+
 
         final List<Pair<Food, String>> data = new ArrayList<>();
 
