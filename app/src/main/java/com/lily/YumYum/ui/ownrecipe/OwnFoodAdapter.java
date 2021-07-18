@@ -64,7 +64,7 @@ public class OwnFoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         foodViewHolder.binding.textName.setText(food.getMainName());
 
         // food description
-        foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));//food.getDescription());
+        foodViewHolder.binding.textDescription.setText(Html.fromHtml(food.getDescription(), Html.FROM_HTML_MODE_COMPACT));
 
         // click event
         foodViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +75,7 @@ public class OwnFoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 mViewModel.getOpenfoodEvent().setValue(position);
             }
         });
+        foodViewHolder.binding.BookmarkStar.setVisibility(View.GONE);
 
         foodViewHolder.binding.executePendingBindings();
     }
