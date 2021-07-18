@@ -12,3 +12,8 @@ A food recipe provider for mobile programming course. Uses spoonacular recipe AP
 * [Timber](https://github.com/JakeWharton/timber)
 * [ViewModel & LiveData](https://developer.android.com/topic/libraries/architecture/adding-components)
 * [DataBinding](https://developer.android.com/topic/libraries/data-binding/)
+
+##Group members:
+* Leily Goli
+* Fereshteh Forghani
+* Mahsa Dalirrooyfard
