@@ -17,15 +17,21 @@ import com.lily.YumYum.utils.SingleLiveEvent;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,7 +60,7 @@ public class FoodListViewModel extends AndroidViewModel {
 
     public List<Pair<Food, String>> getData() {return data; }
 
-    public FoodListViewModel(@NonNull Application application) {
+    public FoodListViewModel(@NonNull Application application, boolean isConnected) {
         super(application);
         Timber.d("Creating viewModel");
 
@@ -63,98 +69,93 @@ public class FoodListViewModel extends AndroidViewModel {
         AppExecutors mExecutors = AppExecutors.getInstance();
         mObservablefoodes = new MutableLiveData<>();
 
+        if (isConnected) {
+            for (int i = 0; i < RANDOM_LIST_NUM; i++) {
 
+                mExecutors.networkIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Timber.d("Start parsing Json");
+                        String recipe = "";
 
+                        try {
+                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=c45b4e0cd05a4cacba82a55aac26dbd4");
 
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
+                        Food food = null;
+                        try {
+                            food = JsonUtils.parsefoodJson(recipe);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        data.add(new Pair<>(food, recipe));
+                        Timber.d("Json parsing finished");
 
-        for (int i = 0; i < RANDOM_LIST_NUM; i++) {
-
-            mExecutors.networkIO().execute(new Runnable() {
+                    }
+                });
+            }
+            mExecutors.diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    Timber.d("Start parsing Json");
-                    String recipe = "";
+                    while (data.size() < RANDOM_LIST_NUM) ;
 
                     try {
-                        recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=c45b4e0cd05a4cacba82a55aac26dbd4");
-
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(mContext.openFileOutput("random.txt", Context.MODE_PRIVATE));
+                        outputStreamWriter.write("");
+                        outputStreamWriter.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    Food food = null;
-                    try {
-                        food = JsonUtils.parsefoodJson(recipe);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    data.add(new Pair<>(food, recipe));
-                    Timber.d("Json parsing finished");
-
-                }
-            });
-        }
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                while (data.size() < RANDOM_LIST_NUM);
-
-                try {
-                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(mContext.openFileOutput("random.txt", Context.MODE_PRIVATE));
-                    outputStreamWriter.write("");
-                    outputStreamWriter.close();
-                }
-                catch (IOException e) {
-                    Timber.e("File write failed: %s", e.toString());
-                }
-                for (Pair<Food, String> date:data
-                     ) {
-                    foodeList.add(date.first);
-                    try {
-                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(mContext.openFileOutput("random.txt", Context.MODE_APPEND));
-                    outputStreamWriter.write(date.second);
-                    outputStreamWriter.write("#");
-                    outputStreamWriter.close();
-                    }
-                    catch (IOException e) {
                         Timber.e("File write failed: %s", e.toString());
                     }
+                    for (Pair<Food, String> date : data
+                    ) {
+                        foodeList.add(date.first);
+                        try {
+                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(mContext.openFileOutput("random.txt", Context.MODE_APPEND));
+                            outputStreamWriter.write(date.second);
+                            outputStreamWriter.write("#");
+                            outputStreamWriter.close();
+                        } catch (IOException e) {
+                            Timber.e("File write failed: %s", e.toString());
+                        }
+                    }
+                    if (!foodeList.isEmpty()) {
+                        Timber.d("Json not null and has " + foodeList.size() + " items");
+                        // update food MutableLiveData from background thread
+                        mObservablefoodes.postValue(foodeList);
+                    }
                 }
-                if (!foodeList.isEmpty()) {
-                    Timber.d("Json not null and has " + foodeList.size() + " items");
-                    // update food MutableLiveData from background thread
-                    mObservablefoodes.postValue(foodeList);
+            });
+        } else {
+            mExecutors.diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    String x = readFromFile(mContext, "random.txt");
+                    String[] y = x.split("#");
+
+                    for (String s : y
+                    ) {
+                        Food food = null;
+                        try {
+                            food = JsonUtils.parsefoodJson(s);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        foodeList.add(food);
+                        data.add(new Pair<Food, String>(food, s));
+                    }
+
+                    if (!foodeList.isEmpty()) {
+
+                        mObservablefoodes.postValue(foodeList);
+                    }
                 }
-            }
-        });
+            });
 
-
-//        mExecutors.diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                String x = readFromFile(mContext, "random.txt");
-//                String[] y = x.split("#");
-//
-//                for (String s : y
-//                ) {
-//                    Food food = null;
-//                    try {
-//                        food = JsonUtils.parsefoodJson(s);
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    foodeList.add(food);
-//                }
-//
-//                if (!foodeList.isEmpty()) {
-//
-//                    mObservablefoodes.postValue(foodeList);
-//                }
-//            }
-//        });
-
+        }
     }
 
     public LiveData<List<Food>> getfoodList() {

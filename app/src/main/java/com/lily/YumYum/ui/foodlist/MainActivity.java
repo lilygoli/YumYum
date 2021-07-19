@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -20,11 +22,14 @@ import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.lily.YumYum.database.DbHelper;
 import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.R;
 import com.lily.YumYum.model.Food;
+import com.lily.YumYum.ui.favorite.FavoriteListViewModel;
+import com.lily.YumYum.ui.favorite.FavoriteViewModelFactory;
 import com.lily.YumYum.ui.ownrecipe.OwnRecipeActivity;
 import com.lily.YumYum.ui.favorite.favoritesActivity;
 
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FoodListViewModel mViewModel;
 
     DbHelper myFavorites;
-
+    private boolean isConnected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
         setContentView(R.layout.activity_main);
+        isConnected = checkConnection();
+        if(!isConnected){
+            CharSequence message = "Internet is not connected.";
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
+        }
 
         myFavorites = new DbHelper(this);
 
@@ -105,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private FoodListViewModel obtainViewModel(FragmentActivity activity) {
-        return ViewModelProviders.of(activity).get(FoodListViewModel.class);
+        return ViewModelProviders.of(activity, new foodListFactory(this.getApplication(), isConnected)).get(FoodListViewModel.class);
+
     }
 
     private void setupListAdapter() {
@@ -151,5 +163,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mFoodAdapter.notifyDataSetChanged();
+    }
+
+    public boolean checkConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }
