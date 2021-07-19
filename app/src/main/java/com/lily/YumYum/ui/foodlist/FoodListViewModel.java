@@ -79,7 +79,7 @@ public class FoodListViewModel extends AndroidViewModel {
                         String recipe = "";
 
                         try {
-                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=c45b4e0cd05a4cacba82a55aac26dbd4");
+                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=fb5afcd37f91441ab2c3bd50d0f0fa09");
 
                         } catch (IOException e) {
                             e.printStackTrace();

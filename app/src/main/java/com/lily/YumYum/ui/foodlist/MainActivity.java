@@ -8,16 +8,19 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
     private FoodListViewModel mViewModel;
 
     DbHelper myFavorites;
+
     private boolean isConnected;
+    SwipeRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
         myFavorites = new DbHelper(this);
 
+        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.rootlayout);
+        refreshLayout.setRefreshing(true);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+            }
+        });
         mViewModel = obtainViewModel(this);
 
         setupToolbar();
@@ -131,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 mViewModel
         );
         recyclerView.setAdapter(mFoodAdapter);
+        refreshLayout.setRefreshing(false);
     }
 
     private void setupToolbar() {
