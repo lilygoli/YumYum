@@ -17,6 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String BOOKMARK_COLUMN_ID = "id";
     public static final String BOOKMARK_COLUMN_POSITION = "position";
     public static final String BOOKMARK_COLUMN_NAME = "name";
+    public static final String BOOKMARK_COLUMN_RECIPE = "recipe";
     private HashMap hp;
 
     public DbHelper(Context context) {
@@ -27,7 +28,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "create table Foods " +
-                        "(id integer primary key, name text, position text)"
+                        "(id integer primary key, name text, position text, recipe text)"
         );
     }
 
@@ -41,13 +42,14 @@ public class DbHelper extends SQLiteOpenHelper {
         mContext.deleteDatabase(DATABASE_NAME);
     }
 
-    public boolean insertFood(String name, String position) {
+    public boolean insertFood(String name, String position, String recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
         //db.execSQL("delete from locations");
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("position", position);
-        Log.i("inset", "insertFood: " + name + position + "to " + BOOKMARK_TABLE_NAME);
+        contentValues.put("recipe", recipe);
+        Log.i("inset", "insertFood: " + name + position + recipe + "to " + BOOKMARK_TABLE_NAME);
         long res = db.insert("Foods", null, contentValues);
         if (res == -1){
             Log.i("inset", "insertFood: " + "did not");
@@ -77,11 +79,12 @@ public class DbHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    public boolean updateFood (Integer id, String name, String position) {
+    public boolean updateFood (Integer id, String name, String position, String recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("position", position);
+        contentValues.put("recipe", recipe);
         db.update("Foods", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
@@ -105,6 +108,19 @@ public class DbHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
         Log.i("arraylist", "onClick: " + array_list);
+        return array_list;
+    }
+
+    public ArrayList<String> getAllRecipes() {
+        ArrayList<String> array_list = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from Foods", null );
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+            array_list.add(res.getString(res.getColumnIndex(BOOKMARK_COLUMN_RECIPE)));
+            res.moveToNext();
+        }
         return array_list;
     }
 

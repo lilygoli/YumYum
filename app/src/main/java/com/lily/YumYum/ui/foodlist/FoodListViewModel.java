@@ -46,10 +46,13 @@ public class FoodListViewModel extends AndroidViewModel {
 
     public boolean isMain = true;
     final ArrayList<Food> foodeList = new ArrayList<>();
+    final List<Pair<Food, String>> data = new ArrayList<>();
 
     public ArrayList<Food> getFoodeList() {
         return foodeList;
     }
+
+    public List<Pair<Food, String>> getData() {return data; }
 
     public FoodListViewModel(@NonNull Application application) {
         super(application);
@@ -61,7 +64,6 @@ public class FoodListViewModel extends AndroidViewModel {
         mObservablefoodes = new MutableLiveData<>();
 
 
-        final List<Pair<Food, String>> data = new ArrayList<>();
 
 
 

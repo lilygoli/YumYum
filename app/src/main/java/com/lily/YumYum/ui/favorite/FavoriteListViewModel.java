@@ -29,15 +29,14 @@ import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 public class FavoriteListViewModel extends AndroidViewModel {
-    ArrayList<Food> AllFoods;
-    Set<String> favFoodNames;
+    ArrayList<String> favFood_recipes;
 
     private final Context mContext;
     private final MutableLiveData<List<Food>> mObservablefoodes;
 
     private final SingleLiveEvent<Integer> mOpenfoodEvent = new SingleLiveEvent<>();
 
-    public FavoriteListViewModel(@NonNull Application application, ArrayList<Food> foods, ArrayList<String> fav_foods) {
+    public FavoriteListViewModel(@NonNull Application application, ArrayList<String> fav_foods_recipes) {
         super(application);
         Timber.d("Creating viewModel");
 
@@ -45,33 +44,20 @@ public class FavoriteListViewModel extends AndroidViewModel {
         mContext = application.getApplicationContext();
         AppExecutors mExecutors = AppExecutors.getInstance();
         mObservablefoodes = new MutableLiveData<>();
-        AllFoods = foods;
-        favFoodNames =  new HashSet<String>(fav_foods);
+        favFood_recipes = fav_foods_recipes;
         final ArrayList<Food> favFoods = new ArrayList<>();
 
         mExecutors.mainThread().execute(new Runnable() {
             @Override
             public void run() {
-//                String x = readFromFile(mContext, "own4.txt");
-//                if(!x.equals("")) {
-//                    String[] y = x.split("#");
-//
-//                    for (String s : y
-//                    ) {
-//                        Food food = null;
-//                        try {
-//                            food = JsonUtils.parsefoodJson(s);
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        foodeList.add(food);
-//                    }
-//                }
-                for (int i = 0; i < AllFoods.size(); i++){
-                    if (favFoodNames.contains(AllFoods.get(i).getMainName())){
-                        favFoods.add(AllFoods.get(i));
+                for (int i = 0; i < favFood_recipes.size(); i++){
+                    Food food = null;
+                    try {
+                        food = JsonUtils.parsefoodJson(favFood_recipes.get(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                    favFoods.add(food);
                 }
                 if (!favFoods.isEmpty()) {
 
@@ -96,33 +82,4 @@ public class FavoriteListViewModel extends AndroidViewModel {
     public MutableLiveData<List<Food>> getmObservablefoodes() {
         return mObservablefoodes;
     }
-
-//    private String readFromFile(Context context, String file) {
-//
-//        String ret = "";
-//
-//        try {
-//            InputStream inputStream = context.openFileInput(file);
-//
-//            if (inputStream != null) {
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//                String receiveString = "";
-//                StringBuilder stringBuilder = new StringBuilder();
-//
-//                while ((receiveString = bufferedReader.readLine()) != null) {
-//                    stringBuilder.append("\n").append(receiveString);
-//                }
-//
-//                inputStream.close();
-//                ret = stringBuilder.toString();
-//            }
-//        } catch (FileNotFoundException e) {
-//            Timber.e("File not found: %s", e.toString());
-//        } catch (IOException e) {
-//            Timber.e("Can not read file: %s", e.toString());
-//        }
-//
-//        return ret;
-//    }
 }

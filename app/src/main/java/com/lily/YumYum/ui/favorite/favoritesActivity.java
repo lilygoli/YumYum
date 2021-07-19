@@ -2,6 +2,7 @@ package com.lily.YumYum.ui.favorite;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -23,9 +24,13 @@ import com.lily.YumYum.model.Food;
 import com.lily.YumYum.ui.details.DetailActivity;
 import com.lily.YumYum.ui.ownrecipe.AddFoodActivity;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class favoritesActivity extends AppCompatActivity {
     private favoriteAdapter mFavoriteAdapter;
@@ -33,16 +38,15 @@ public class favoritesActivity extends AppCompatActivity {
     private static FavoriteListViewModel fModel;
 
     DbHelper db;
-    ArrayList<Food> foodList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        foodList = (ArrayList<Food>) this.getIntent().getSerializableExtra("EXTERA_FOODLIST");
-        final HashMap<String, Integer> namePos = new HashMap<>();
-        for (int i = 0; i < foodList.size(); i++){
-            namePos.put(foodList.get(i).getMainName(), i);
-        }
+//        foodList = (ArrayList<Food>) this.getIntent().getSerializableExtra("EXTERA_FOODLIST");
+//        final HashMap<String, Integer> namePos = new HashMap<>();
+//        for (int i = 0; i < foodList.size(); i++){
+//            namePos.put(foodList.get(i).getMainName(), i);
+//        }
         DataBindingUtil.setContentView(this, R.layout.favorites);
         db = new DbHelper(this);
         fModel = obtainViewModel(this);
@@ -67,9 +71,19 @@ public class favoritesActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Integer position) {
                 if (position != null) {
-                    String name = db.getAllFoods().get(position);
-                    Integer p = namePos.get(name);
-                    launchDetailActivity(p);
+                    String recipe = db.getAllRecipes().get(position);
+                    try {
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getApplicationContext().openFileOutput("temp.txt", Context.MODE_PRIVATE));
+                        outputStreamWriter.write(recipe);
+                        outputStreamWriter.write("#");
+                        outputStreamWriter.close();
+                    }
+                    catch (IOException e) {
+                        Timber.e("File write failed: %s", e.toString());
+                    }
+//                    String name = db.getAllFoods().get(position);
+//                    Integer p = namePos.get(name);
+                    launchDetailActivity(0);
                 }
             }
         });
@@ -84,7 +98,7 @@ public class favoritesActivity extends AppCompatActivity {
     }
 
     private FavoriteListViewModel obtainViewModel(FragmentActivity activity) {
-        return ViewModelProviders.of(this, new FavoriteViewModelFactory(this.getApplication(), foodList, db.getAllFoods())).get(FavoriteListViewModel.class);
+        return ViewModelProviders.of(this, new FavoriteViewModelFactory(this.getApplication(), db.getAllRecipes())).get(FavoriteListViewModel.class);
     }
 
 
@@ -112,7 +126,7 @@ public class favoritesActivity extends AppCompatActivity {
     private void launchDetailActivity(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
-        intent.putExtra(DetailActivity.EXTRA_FILE, "random.txt");
+        intent.putExtra(DetailActivity.EXTRA_FILE, "temp.txt");
         startActivity(intent);
     }
 

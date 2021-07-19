@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
-        }
         setContentView(R.layout.activity_main);
 
         myFavorites = new DbHelper(this);
@@ -146,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchFavoriteFoodActivity(){
         Intent intent = new Intent(this,favoritesActivity.class);
-        intent.putExtra("EXTERA_FOODLIST", mViewModel.getFoodeList());
+        //intent.putExtra("EXTERA_FOODLIST", mViewModel.getFoodeList());
         startActivity(intent);
     }
 

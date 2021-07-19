@@ -10,19 +10,17 @@ import java.util.ArrayList;
 
 public class FavoriteViewModelFactory implements ViewModelProvider.Factory {
     private Application mApplication;
-    private ArrayList<Food> mfoods;
-    private ArrayList<String> mfav_foods;
+    private ArrayList<String> mfav_foods_recipes;
 
 
-    public FavoriteViewModelFactory(Application application, ArrayList<Food> foods, ArrayList<String> fav_foods) {
+    public FavoriteViewModelFactory(Application application, ArrayList<String> fav_foods_recipes) {
         mApplication = application;
-        mfoods = foods;
-        mfav_foods = fav_foods;
+        mfav_foods_recipes = fav_foods_recipes;
     }
 
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        return (T) new FavoriteListViewModel(mApplication, mfoods, mfav_foods);
+        return (T) new FavoriteListViewModel(mApplication, mfav_foods_recipes);
     }
 }

@@ -91,7 +91,8 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 else {
                     Timber.d("Position clicked: %s", position);
                     food.setBookmarked(true);
-                    m.myFavorites.insertFood(food.getMainName(), String.valueOf(position));
+                    m.myFavorites.insertFood(food.getMainName(), String.valueOf(position),
+                            mViewModel.getData().get(position).second);
                     Log.d("Database", m.myFavorites.getAllFoods().toString());
                 }
             }
