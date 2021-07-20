@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Pair;
 
 import com.lily.YumYum.model.Food;
@@ -72,7 +73,7 @@ public class FoodListViewModel extends AndroidViewModel {
                         String recipe = "";
 
                         try {
-                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=ce7a8ae4b05e4c828b4006464abc49bd");
+                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=c9edce9371f741b0956d14c047657536");
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -130,8 +131,6 @@ public class FoodListViewModel extends AndroidViewModel {
 
                     for (String s : y
                     ) {
-                        if (!s.trim().equals("")) {
-
                             Food food = null;
                             try {
                                 food = JsonUtils.parsefoodJson(s);
@@ -139,6 +138,7 @@ public class FoodListViewModel extends AndroidViewModel {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        if (food != null) {
                             foodeList.add(food);
                             data.add(new Pair<Food, String>(food, s));
                         }
