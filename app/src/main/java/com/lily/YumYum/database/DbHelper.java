@@ -49,14 +49,14 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put("name", name);
         contentValues.put("position", position);
         contentValues.put("recipe", recipe);
-        Log.i("inset", "insertFood: " + name + position + recipe + "to " + BOOKMARK_TABLE_NAME);
+//        Log.i("inset", "insertFood: " + name + position + recipe + "to " + BOOKMARK_TABLE_NAME);
         long res = db.insert("Foods", null, contentValues);
         if (res == -1){
-            Log.i("inset", "insertFood: " + "did not");
+//            Log.i("inset", "insertFood: " + "did not");
             return false;
         }
         else {
-            Log.i("inset", "insertFood: " + "did not");
+//            Log.i("inset", "insertFood: " + "did not");
         }
         return true;
     }
@@ -136,7 +136,7 @@ public class DbHelper extends SQLiteOpenHelper {
             array_list.add(new Pair(res.getString(res.getColumnIndex(BOOKMARK_COLUMN_NAME)),res.getString(res.getColumnIndex(BOOKMARK_COLUMN_POSITION))));
             res.moveToNext();
         }
-        Log.i("arraylist", "onClick: " + array_list);
+//        Log.i("arraylist", "onClick: " + array_list);
         return new Pair(array_list, array_names);
     }
 

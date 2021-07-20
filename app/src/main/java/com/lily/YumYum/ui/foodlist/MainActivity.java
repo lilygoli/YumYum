@@ -3,6 +3,7 @@ package com.lily.YumYum.ui.foodlist;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             CharSequence message = "Internet is not connected.";
             Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
             toast.show();
+
         }
 
         myFavorites = new DbHelper(this);
@@ -185,10 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean checkConnection() {
         ConnectivityManager cm =
-                (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
         return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+                activeNetwork.isConnected() && activeNetwork.isAvailable();
     }
 }

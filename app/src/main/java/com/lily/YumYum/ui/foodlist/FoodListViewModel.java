@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Pair;
 
 import com.lily.YumYum.model.Food;
@@ -17,25 +16,17 @@ import com.lily.YumYum.utils.SingleLiveEvent;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import timber.log.Timber;
 
 public class FoodListViewModel extends AndroidViewModel {
@@ -58,7 +49,9 @@ public class FoodListViewModel extends AndroidViewModel {
         return foodeList;
     }
 
-    public List<Pair<Food, String>> getData() {return data; }
+    public List<Pair<Food, String>> getData() {
+        return data;
+    }
 
     public FoodListViewModel(@NonNull Application application, boolean isConnected) {
         super(application);
@@ -79,7 +72,7 @@ public class FoodListViewModel extends AndroidViewModel {
                         String recipe = "";
 
                         try {
-                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=e3c7682503084b3f8e9bfd385f7f9386");
+                            recipe = getRecipes("https://api.spoonacular.com/recipes/random?apiKey=ce7a8ae4b05e4c828b4006464abc49bd");
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -137,21 +130,23 @@ public class FoodListViewModel extends AndroidViewModel {
 
                     for (String s : y
                     ) {
-                        Food food = null;
-                        try {
-                            food = JsonUtils.parsefoodJson(s);
+                        if (!s.trim().equals("")) {
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            Food food = null;
+                            try {
+                                food = JsonUtils.parsefoodJson(s);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            foodeList.add(food);
+                            data.add(new Pair<Food, String>(food, s));
                         }
-                        foodeList.add(food);
-                        data.add(new Pair<Food, String>(food, s));
                     }
 
-                    if (!foodeList.isEmpty()) {
 
-                        mObservablefoodes.postValue(foodeList);
-                    }
+                    mObservablefoodes.postValue(foodeList);
+
                 }
             });
 
@@ -176,6 +171,7 @@ public class FoodListViewModel extends AndroidViewModel {
             return response.body().string();
         }
     }
+
     private String readFromFile(Context context, String file) {
 
         String ret = "";
